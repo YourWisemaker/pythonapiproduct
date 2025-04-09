@@ -1,0 +1,928 @@
+{
+	"info": {
+		"_postman_id": "13c7da13-1457-4a2a-8bcf-8c6e782a532e",
+		"name": "Python Product Rental API",
+		"description": "API for managing product rentals with regional pricing using FastAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3243237"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "List all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						},
+						"description": "Get a list of all products with their attributes"
+					},
+					"response": []
+				},
+				{
+					"name": "Get product details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"{{product_id}}"
+							]
+						},
+						"description": "Get detailed information about a specific product including its attributes"
+					},
+					"response": []
+				},
+				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						},
+						"description": "Create a new product"
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"{{product_id}}"
+							]
+						},
+						"description": "Update an existing product"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/products/{{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"{{product_id}}"
+							]
+						},
+						"description": "Delete a product"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing products and their attributes"
+		},
+		{
+			"name": "Attributes",
+			"item": [
+				{
+					"name": "List all attributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/attributes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes"
+							]
+						},
+						"description": "Get a list of all attributes"
+					},
+					"response": []
+				},
+				{
+					"name": "Get attribute details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/attributes/{{attribute_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes",
+								"{{attribute_id}}"
+							]
+						},
+						"description": "Get detailed information about a specific attribute"
+					},
+					"response": []
+				},
+				{
+					"name": "Create attribute",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Processor\",\n  \"type\": \"text\",\n  \"is_filterable\": true,\n  \"is_required\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/attributes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes"
+							]
+						},
+						"description": "Create a new attribute"
+					},
+					"response": []
+				},
+				{
+					"name": "Update attribute",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/attributes/{{attribute_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes",
+								"{{attribute_id}}"
+							]
+						},
+						"description": "Update an existing attribute"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete attribute",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/attributes/{{attribute_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes",
+								"{{attribute_id}}"
+							]
+						},
+						"description": "Delete an attribute"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing attributes"
+		},
+		{
+			"name": "Attribute Values",
+			"item": [
+				{
+					"name": "List all attribute values",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/attribute-values?attribute_id={{attribute_id}}&value=Gold",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attribute-values"
+							],
+							"query": [
+								{
+									"key": "attribute_id",
+									"value": "{{attribute_id}}",
+									"description": "Filter by attribute ID"
+								},
+								{
+									"key": "value",
+									"value": "Gold",
+									"description": "Filter by value name (partial match)"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Number of records to skip",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "100",
+									"description": "Maximum number of records to return",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get a list of all attribute values with optional filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Get attribute value details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/attribute-values/{{value_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attribute-values",
+								"{{value_id}}"
+							]
+						},
+						"description": "Get detailed information about a specific attribute value"
+					},
+					"response": []
+				},
+				{
+					"name": "Create attribute value",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"attribute_id\": {{attribute_id}},\n  \"value\": \"Gold\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/attribute-values",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attribute-values"
+							]
+						},
+						"description": "Create a new attribute value"
+					},
+					"response": []
+				},
+				{
+					"name": "Update attribute value",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": \"Space Gray\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/attribute-values/{{attribute_value_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attribute-values",
+								"{{attribute_value_id}}"
+							]
+						},
+						"description": "Update an existing attribute value"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete attribute value",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/attribute-values/{{attribute_value_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attribute-values",
+								"{{attribute_value_id}}"
+							]
+						},
+						"description": "Delete an attribute value"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing attribute values"
+		},
+		{
+			"name": "Pricing",
+			"item": [
+				{
+					"name": "List all pricing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/pricing",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"pricing"
+							]
+						},
+						"description": "Get a list of all pricing"
+					},
+					"response": []
+				},
+				{
+					"name": "Get pricing details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/pricing/{{pricing_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"pricing",
+								"{{pricing_id}}"
+							]
+						},
+						"description": "Get detailed information about specific pricing"
+					},
+					"response": []
+				},
+				{
+					"name": "Create pricing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"region_id\": \"{{region_id}}\",\n  \"rental_period_id\": \"{{rental_period_id}}\",\n  \"price\": 99.99,\n  \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/pricing",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"pricing"
+							]
+						},
+						"description": "Create new pricing"
+					},
+					"response": []
+				},
+				{
+					"name": "Update pricing",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/pricing/{{pricing_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"pricing",
+								"{{pricing_id}}"
+							]
+						},
+						"description": "Update existing pricing"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete pricing",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/pricing/{{pricing_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"pricing",
+								"{{pricing_id}}"
+							]
+						},
+						"description": "Delete pricing"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing pricing"
+		},
+		{
+			"name": "Regions",
+			"item": [
+				{
+					"name": "List all regions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/regions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"regions"
+							]
+						},
+						"description": "Get a list of all regions"
+					},
+					"response": []
+				},
+				{
+					"name": "Get region details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/regions/{{region_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"regions",
+								"{{region_id}}"
+							]
+						},
+						"description": "Get detailed information about a specific region"
+					},
+					"response": []
+				},
+				{
+					"name": "Create region",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Asia\",\n  \"code\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/regions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"regions"
+							]
+						},
+						"description": "Create a new region"
+					},
+					"response": []
+				},
+				{
+					"name": "Update region",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Europe\",\n  \"code\": \"Test23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/regions/{{region_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"regions",
+								"{{region_id}}"
+							]
+						},
+						"description": "Update an existing region"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete region",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/regions/{{region_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"regions",
+								"{{region_id}}"
+							]
+						},
+						"description": "Delete a region"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing regions"
+		},
+		{
+			"name": "Rental Periods",
+			"item": [
+				{
+					"name": "List all rental periods",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-periods",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-periods"
+							]
+						},
+						"description": "Get a list of all rental periods"
+					},
+					"response": []
+				},
+				{
+					"name": "Get rental period details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-periods/{{rental_period_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-periods",
+								"{{rental_period_id}}"
+							]
+						},
+						"description": "Get detailed information about a specific rental period"
+					},
+					"response": []
+				},
+				{
+					"name": "Create rental period",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tesss\",\n  \"days\": 90,\n  \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-periods",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-periods"
+							]
+						},
+						"description": "Create a new rental period"
+					},
+					"response": []
+				},
+				{
+					"name": "Update rental period",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tesss\",\n  \"days\": 30,\n  \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-periods/{{rental_period_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-periods",
+								"{{rental_period_id}}"
+							]
+						},
+						"description": "Update an existing rental period"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete rental period",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-periods/{{rental_period_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-periods",
+								"{{rental_period_id}}"
+							]
+						},
+						"description": "Delete a rental period"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing rental periods"
+		},
+		{
+			"name": "Rental Transactions",
+			"item": [
+				{
+					"name": "List all rental transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-transactions"
+							]
+						},
+						"description": "Get a list of all rental transactions"
+					},
+					"response": []
+				},
+				{
+					"name": "Get rental transaction details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-transactions/{{transaction_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-transactions",
+								"{{transaction_id}}"
+							]
+						},
+						"description": "Get detailed information about a specific rental transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Create rental transaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"rental_period_id\": \"{{rental_period_id}}\",\n  \"region_id\": \"{{region_id}}\",\n  \"pricing_id\": \"{{pricing_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-transactions"
+							]
+						},
+						"description": "Create a new rental transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Update rental transaction",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product_id\": \"{{product_id}}\",\n  \"rental_period_id\": \"{{rental_period_id}}\",\n  \"region_id\": \"{{region_id}}\",\n  \"pricing_id\": \"{{pricing_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-transactions/{{transaction_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-transactions",
+								"{{transaction_id}}"
+							]
+						},
+						"description": "Update an existing rental transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete rental transaction",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/rental-transactions/{{transaction_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rental-transactions",
+								"{{transaction_id}}"
+							]
+						},
+						"description": "Delete a rental transaction"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing rental transactions"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000"
+		},
+		{
+			"key": "product_id",
+			"value": "1"
+		},
+		{
+			"key": "attribute_id",
+			"value": "1"
+		},
+		{
+			"key": "pricing_id",
+			"value": "1"
+		},
+		{
+			"key": "region_id",
+			"value": "1"
+		},
+		{
+			"key": "rental_period_id",
+			"value": "1"
+		},
+		{
+			"key": "transaction_id",
+			"value": "1"
+		},
+		{
+			"key": "value_id",
+			"value": "1"
+		}
+	]
+}
