@@ -10,8 +10,31 @@ from app.models.product_attribute_value import ProductAttributeValue
 router = APIRouter()
 
 
-@router.post("/products", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/products", 
+    response_model=ProductResponse, 
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a new product",
+    description="Creates a new product in the system with the provided details.",
+    responses={
+        201: {"description": "Product created successfully"},
+        400: {"description": "Bad request - Product with this name or SKU already exists"}
+    }
+)
 def create_product(product: ProductCreate, db: Session = Depends(get_db)):
+    """
+    Create a new product with the provided details.
+    
+    Args:
+        product: Product data including name, description, and SKU
+        db: Database session dependency
+        
+    Returns:
+        ProductResponse: The newly created product
+        
+    Raises:
+        HTTPException: If a product with the same name or SKU already exists
+    """
     # Check for duplicate product name
     existing_product = db.query(Product).filter(Product.name == product.name).first()
     if existing_product:
@@ -29,7 +52,15 @@ def create_product(product: ProductCreate, db: Session = Depends(get_db)):
     return db_product
 
 
-@router.get("/products", response_model=List[ProductResponse])
+@router.get(
+    "/products", 
+    response_model=List[ProductResponse],
+    summary="Get all products",
+    description="Retrieve a list of products with optional filtering.",
+    responses={
+        200: {"description": "List of products retrieved successfully"}
+    }
+)
 def read_products(
     skip: int = 0, 
     limit: int = 100, 
@@ -37,6 +68,19 @@ def read_products(
     is_active: Optional[bool] = None,
     db: Session = Depends(get_db)
 ):
+    """
+    Retrieve a list of products with optional filtering.
+    
+    Args:
+        skip: Number of products to skip (pagination)
+        limit: Maximum number of products to return (pagination)
+        name: Optional filter for product name (partial match)
+        is_active: Optional filter for active status
+        db: Database session dependency
+        
+    Returns:
+        List[ProductResponse]: List of products matching the criteria
+    """
     query = db.query(Product)
     
     if name:
@@ -48,8 +92,30 @@ def read_products(
     return query.offset(skip).limit(limit).all()
 
 
-@router.get("/products/{product_id}", response_model=ProductDetailResponse)
+@router.get(
+    "/products/{product_id}", 
+    response_model=ProductDetailResponse,
+    summary="Get a specific product by ID",
+    description="Retrieve detailed information about a specific product by its ID.",
+    responses={
+        200: {"description": "Product details retrieved successfully"},
+        404: {"description": "Product not found"}
+    }
+)
 def read_product(product_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieve detailed information about a specific product by its ID.
+    
+    Args:
+        product_id: ID of the product to retrieve
+        db: Database session dependency
+        
+    Returns:
+        ProductDetailResponse: Detailed product information including attributes and pricing
+        
+    Raises:
+        HTTPException: If the product is not found
+    """
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -103,8 +169,32 @@ def read_product(product_id: int, db: Session = Depends(get_db)):
     return response
 
 
-@router.put("/products/{product_id}", response_model=ProductResponse)
+@router.put(
+    "/products/{product_id}", 
+    response_model=ProductResponse,
+    summary="Update a product",
+    description="Update an existing product with the provided details.",
+    responses={
+        200: {"description": "Product updated successfully"},
+        400: {"description": "Bad request - Product with this name or SKU already exists"},
+        404: {"description": "Product not found"}
+    }
+)
 def update_product(product_id: int, product: ProductUpdate, db: Session = Depends(get_db)):
+    """
+    Update an existing product with the provided details.
+    
+    Args:
+        product_id: ID of the product to update
+        product: Updated product data
+        db: Database session dependency
+        
+    Returns:
+        ProductResponse: The updated product
+        
+    Raises:
+        HTTPException: If the product is not found or if there's a duplicate name/SKU
+    """
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -127,8 +217,31 @@ def update_product(product_id: int, product: ProductUpdate, db: Session = Depend
     return db_product
 
 
-@router.delete("/products/{product_id}", status_code=status.HTTP_200_OK)
+@router.delete(
+    "/products/{product_id}", 
+    status_code=status.HTTP_200_OK,
+    summary="Delete a product",
+    description="Delete a product from the system by its ID.",
+    responses={
+        200: {"description": "Product deleted successfully"},
+        400: {"description": "Bad request - Product cannot be deleted as it is referenced elsewhere"},
+        404: {"description": "Product not found"}
+    }
+)
 def delete_product(product_id: int, db: Session = Depends(get_db)):
+    """
+    Delete a product from the system by its ID.
+    
+    Args:
+        product_id: ID of the product to delete
+        db: Database session dependency
+        
+    Returns:
+        dict: Confirmation message
+        
+    Raises:
+        HTTPException: If the product is not found or cannot be deleted
+    """
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
