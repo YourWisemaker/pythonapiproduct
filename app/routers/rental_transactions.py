@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Body
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app.database import get_db
 from app.models.rental_transaction import RentalTransaction, TransactionStatus
 from app.models.product import Product
 from app.models.region import Region
 from app.models.rental_period import RentalPeriod
-from app.schemas.rental_transaction import RentalTransactionCreate, RentalTransactionUpdate, RentalTransactionResponse, RentalTransactionDetailResponse
+from app.models.product_pricing import ProductPricing
+from app.schemas.rental_transaction import RentalTransactionCreate, RentalTransactionUpdate, RentalTransactionResponse, RentalTransactionDetailResponse, RentalTransactionCheck, RentalTransactionCheckResponse
 
 router = APIRouter()
 
@@ -226,3 +227,97 @@ def update_transaction_status(
     db.commit()
     db.refresh(db_transaction)
     return db_transaction
+
+
+@router.post("/check-rental", response_model=RentalTransactionCheckResponse)
+async def check_rental_transaction(check: RentalTransactionCheck = Body(...), db: Session = Depends(get_db)):
+    """Check if a product is available for rental based on pricing_id and date range"""
+    # 1. Verify that pricing exists and retrieve its information
+    pricing = db.query(ProductPricing).filter(ProductPricing.id == check.pricing_id).first()
+    if not pricing:
+        return RentalTransactionCheckResponse(
+            available=False,
+            message="Pricing not found"
+        )
+    
+    # 2. Verify that the pricing matches the provided product, region, and rental period
+    if (pricing.product_id != check.product_id or 
+        pricing.region_id != check.region_id or 
+        pricing.rental_period_id != check.rental_period_id):
+        return RentalTransactionCheckResponse(
+            available=False,
+            message="Pricing does not match the provided product, region, and rental period"
+        )
+    
+    # 3. Check if pricing is active
+    if not pricing.is_active:
+        return RentalTransactionCheckResponse(
+            available=False,
+            message="Pricing is not active for this product, region, and rental period"
+        )
+    
+    # 4. Set default dates if not provided
+    start_date = check.start_date or datetime.now()
+    
+    # Get rental period days if end_date isn't provided
+    if not check.end_date:
+        rental_period = db.query(RentalPeriod).filter(RentalPeriod.id == check.rental_period_id).first()
+        if not rental_period:
+            return RentalTransactionCheckResponse(
+                available=False,
+                message="Rental period not found"
+            )
+        end_date = start_date + timedelta(days=rental_period.days)
+    else:
+        end_date = check.end_date
+    
+    # 5. Check if the dates are valid
+    if start_date >= end_date:
+        return RentalTransactionCheckResponse(
+            available=False,
+            message="End date must be after start date"
+        )
+    
+    # 6. Check if product is available for the requested period
+    overlapping_transactions = db.query(RentalTransaction).filter(
+        RentalTransaction.product_id == check.product_id,
+        RentalTransaction.status == TransactionStatus.CONFIRMED,
+        RentalTransaction.start_date <= end_date,
+        RentalTransaction.end_date >= start_date
+    ).all()
+    
+    if overlapping_transactions:
+        return RentalTransactionCheckResponse(
+            available=False,
+            message="Product is already rented for the requested period"
+        )
+    
+    # 7. Get information about related entities for the response
+    product = db.query(Product).filter(Product.id == check.product_id).first()
+    region = db.query(Region).filter(Region.id == check.region_id).first()
+    rental_period = db.query(RentalPeriod).filter(RentalPeriod.id == check.rental_period_id).first()
+    
+    # 8. Return success response
+    return RentalTransactionCheckResponse(
+        available=True,
+        product={
+            "id": product.id,
+            "name": product.name,
+            "sku": product.sku
+        },
+        region={
+            "id": region.id,
+            "name": region.name,
+            "code": region.code
+        },
+        rental_period={
+            "id": rental_period.id,
+            "name": rental_period.name,
+            "days": rental_period.days
+        },
+        pricing={
+            "id": pricing.id,
+            "price": float(pricing.price) if pricing.price else None
+        },
+        message="Product is available for rental during the requested period"
+    )

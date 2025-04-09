@@ -59,3 +59,35 @@ class RentalTransactionDetailResponse(RentalTransactionResponse):
 
     class Config:
         orm_mode = True
+
+
+class RentalTransactionCheck(BaseModel):
+    """Simplified schema for checking rental transaction availability with pricing_id"""
+    product_id: int
+    rental_period_id: int
+    region_id: int
+    pricing_id: int
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "product_id": 1,
+                "rental_period_id": 1,
+                "region_id": 1,
+                "pricing_id": 1
+            }
+        }
+
+
+class RentalTransactionCheckResponse(BaseModel):
+    """Response schema for rental transaction availability check"""
+    available: bool
+    product: Optional[Dict[str, Any]] = None
+    region: Optional[Dict[str, Any]] = None
+    rental_period: Optional[Dict[str, Any]] = None
+    pricing: Optional[Dict[str, Any]] = None
+    message: Optional[str] = None
